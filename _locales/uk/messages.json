@@ -1,0 +1,73 @@
+{
+  "langCode": {
+    "message": "uk"
+  },
+  "extName": {
+    "message": "Instagram Follow Lists+"
+  },
+  "extDescription": {
+    "message": "Ширші списки підписників і підписок з групами та позначкою «стежить за вами»; охайніша стрічка з більшими дописами."
+  },
+  "versionLabel": {
+    "message": "Версія $VALUE$",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "updateAvailable": {
+    "message": "Доступна версія $VALUE$",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "download": {
+    "message": "Завантажити"
+  },
+  "whatsNew": {
+    "message": "Що нового"
+  },
+  "fullHistory": {
+    "message": "Уся історія змін"
+  },
+  "hideHistory": {
+    "message": "Сховати історію"
+  },
+  "noNotes": {
+    "message": "Для цієї версії немає опису."
+  },
+  "checkedAt": {
+    "message": "Перевірено: $VALUE$",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "neverChecked": {
+    "message": "Ще не перевірялось"
+  },
+  "checksOff": {
+    "message": "Перевірку оновлень ще не налаштовано"
+  },
+  "checkNow": {
+    "message": "Перевірити"
+  },
+  "checking": {
+    "message": "Перевірка…"
+  },
+  "notifTitle": {
+    "message": "Вийшла Instagram Follow Lists+ $VALUE$",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "notifDefault": {
+    "message": "Натисніть, щоб завантажити нову версію."
+  }
+}

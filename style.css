@@ -1,0 +1,555 @@
+/* ================= Full-height modal ================= */
+div[role="dialog"][data-ig-tall] {
+  height: calc(100vh - 40px) !important;
+  max-height: calc(100vh - 40px) !important;
+}
+div[role="dialog"][data-ig-tall] > div:not(.igx-pop) {
+  height: 100% !important;
+  max-height: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+div[role="dialog"][data-ig-tall] > div:not(.igx-pop) > div:last-child,
+div[role="dialog"][data-ig-tall] > div:not(.igx-pop) > div:last-child > div,
+div[role="dialog"][data-ig-tall] > div:not(.igx-pop) > div:last-child > div > div {
+  flex: 1 1 auto !important;
+  height: auto !important;
+  max-height: none !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+div[role="dialog"][data-ig-tall] [data-igx-scroll] {
+  flex: 1 1 auto !important;
+  height: auto !important;
+  max-height: none !important;
+  min-height: 0 !important;
+}
+
+/* ================= Tokens ================= */
+[data-ig-tall], .igx-pop {
+  --igx-text: rgb(var(--ig-primary-text, 245, 245, 245));
+  --igx-muted: rgb(var(--ig-secondary-text, 168, 168, 168));
+  --igx-stroke: rgb(var(--ig-stroke, 85, 85, 85));
+  --igx-sep: rgb(var(--ig-elevated-separator, 54, 54, 54));
+  --igx-hover: rgba(var(--ig-hover-overlay, 255, 255, 255, .1));
+  --igx-surface: rgb(var(--ig-secondary-background, 37, 41, 46));
+  --igx-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ================= Group chip ================= */
+.igx-chip {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  align-self: center;
+  height: 28px;
+  padding: 0 9px 0 10px;
+  margin-left: 12px;
+  border-radius: 14px;
+  font: 500 12px/1 var(--igx-font);
+  color: var(--igx-text);
+  background: color-mix(in srgb, var(--igx-c) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--igx-c) 45%, transparent);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s;
+}
+.igx-chip:hover { background: color-mix(in srgb, var(--igx-c) 26%, transparent); }
+.igx-chip.igx-empty { opacity: .55; background: transparent; border: 1px dashed currentColor; }
+.igx-chip.igx-empty:hover { opacity: .9; }
+.igx-chip.igx-empty .igx-dot { display: none; }
+.igx-chip svg { opacity: .6; }
+.igx-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--igx-c);
+  flex: 0 0 auto;
+}
+
+/* ================= "Follows me" indicator ================= */
+.igx-fb {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  align-self: center;
+  width: 104px; /* same as Instagram's Following button */
+  height: 32px;
+  padding: 0 6px;
+  margin: 0 0 0 12px; /* Instagram's button wrapper already adds 12px on its left */
+  border-radius: 8px;
+  border: 1px solid var(--igx-stroke);
+  background: transparent;
+  font: 600 13px/1 var(--igx-font);
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+}
+.igx-fb.igx-yes { color: var(--igx-text); }
+.igx-fb.igx-no {
+  color: color-mix(in srgb, var(--igx-text) 45%, transparent);
+  border-color: color-mix(in srgb, var(--igx-stroke) 55%, transparent);
+}
+.igx-fb.igx-unknown { color: var(--igx-muted); border-style: dashed; border-color: var(--igx-sep); font-weight: 500; }
+
+/* ================= Mute group (posts / stories in my feed) ================= */
+.igx-mute {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex: 0 0 auto;
+  align-self: center;
+  margin-left: 12px;
+}
+.igx-mute.igx-na { visibility: hidden; } /* not followed: keep the column aligned */
+.igx-mbtn {
+  all: unset;
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  color: color-mix(in srgb, var(--igx-text) 85%, transparent);
+  cursor: pointer;
+  transition: color .15s, background .15s, opacity .15s;
+}
+.igx-mbtn:hover:not(:disabled) { background: var(--igx-hover); color: var(--igx-text); }
+.igx-mbtn:disabled { cursor: default; }
+.igx-mbtn .igx-slash { position: absolute; inset: 0; margin: auto; display: none; }
+.igx-mbtn.igx-muted { color: color-mix(in srgb, var(--igx-text) 40%, transparent); }
+.igx-mbtn.igx-muted .igx-slash { display: block; }
+.igx-mute.igx-loading .igx-mbtn { opacity: .3; }
+.igx-mute.igx-loading .igx-mbtn:hover { opacity: .8; }
+.igx-mbtn.igx-pending { opacity: .4; pointer-events: none; }
+.igx-mbtn:focus-visible { outline: 2px solid #0095f6; outline-offset: 1px; }
+
+/* Follow / Following / Remove keep one width, so rows don't jump on (un)follow */
+[data-igx-row] > :last-child :is(button, [role="button"]):not(.igx-chip):not(.igx-mbtn) {
+  width: 104px !important;
+  min-width: 104px !important;
+  box-sizing: border-box !important;
+  justify-content: center !important;
+}
+
+/* ================= Filter bar ================= */
+.igx-bar {
+  flex: 0 0 auto !important;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 16px 10px;
+  border-bottom: 1px solid var(--igx-sep);
+}
+.igx-pills {
+  flex: 1 1 auto;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  min-width: 0;
+}
+.igx-pills::-webkit-scrollbar { display: none; }
+.igx-pill {
+  all: unset;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 15px;
+  font: 500 13px/1 var(--igx-font);
+  color: var(--igx-text);
+  border: 1px solid var(--igx-sep);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s, border-color .15s;
+}
+.igx-pill:hover { background: var(--igx-hover); }
+.igx-pill.igx-on {
+  background: var(--igx-text);
+  color: rgb(var(--ig-primary-background, 12, 16, 20));
+  border-color: var(--igx-text);
+}
+.igx-pill.igx-on .igx-count { color: inherit; opacity: .6; }
+.igx-count { color: var(--igx-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.igx-icon {
+  all: unset;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  color: var(--igx-muted);
+  cursor: pointer;
+}
+.igx-icon:hover { background: var(--igx-hover); color: var(--igx-text); }
+.igx-sync.igx-spin svg { animation: igx-spin 1s linear infinite; }
+.igx-sync { position: relative; }
+.igx-sync[data-tip]:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 8px);
+  right: -4px;
+  z-index: 10;
+  width: max-content;
+  max-width: 280px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #262626;
+  color: #f5f5f5;
+  box-shadow: 0 8px 24px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.08);
+  font: 400 12px/1.45 var(--igx-font);
+  text-align: left;
+  white-space: pre-line;
+  pointer-events: none;
+}
+html.__fb-light-mode .igx-sync[data-tip]:hover::after { background: #fff; color: #111; box-shadow: 0 8px 24px rgba(0,0,0,.15), 0 0 0 1px rgba(0,0,0,.08); }
+.igx-sync.igx-err { color: #ff453a; }
+@keyframes igx-spin { to { transform: rotate(360deg); } }
+
+/* ================= Group list (filtered view) ================= */
+.igx-list {
+  flex: 1 1 auto !important;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+.igx-list[hidden], [data-igx-hide] { display: none !important; }
+.igx-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+}
+.igx-row + .igx-row { border-top: 1px solid color-mix(in srgb, var(--igx-sep) 55%, transparent); }
+.igx-av {
+  flex: 0 0 auto;
+  width: 44px; height: 44px;
+  margin-right: 12px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--igx-surface);
+  display: flex; align-items: center; justify-content: center;
+}
+.igx-av img { width: 100%; height: 100%; object-fit: cover; }
+.igx-letter { font: 600 17px/1 var(--igx-font); color: var(--igx-muted); }
+.igx-who {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-decoration: none !important;
+}
+.igx-u, .igx-n { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.igx-u { font: 600 14px/18px var(--igx-font); color: var(--igx-text); }
+.igx-n { font: 400 14px/18px var(--igx-font); color: var(--igx-muted); }
+.igx-row .igx-fb { margin-right: 0; }
+.igx-emptylist {
+  padding: 40px 16px;
+  text-align: center;
+  font: 400 14px/1.4 var(--igx-font);
+  color: var(--igx-muted);
+}
+
+/* ================= Popovers ================= */
+.igx-pop {
+  position: fixed;
+  z-index: 2147483647;
+  padding: 6px;
+  border-radius: 12px;
+  background: #262626;
+  color: #f5f5f5;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.08);
+  font: 400 14px/1.2 var(--igx-font);
+  animation: igx-in .12s ease-out;
+}
+html.__fb-light-mode .igx-pop {
+  background: #fff; color: #111;
+  box-shadow: 0 10px 30px rgba(0,0,0,.15), 0 0 0 1px rgba(0,0,0,.08);
+}
+@keyframes igx-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+.igx-menu { min-width: 190px; }
+.igx-item {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.igx-item:hover { background: rgba(128,128,128,.18); }
+.igx-item .igx-dot { width: 10px; height: 10px; }
+.igx-grow { flex: 1; }
+.igx-check { opacity: 0; font-size: 13px; }
+.igx-active .igx-check { opacity: 1; }
+.igx-none .igx-dot { border: 1px dashed currentColor; box-sizing: border-box; }
+.igx-none { opacity: .75; }
+.igx-manage-link {
+  margin-top: 4px;
+  border-top: 1px solid rgba(128,128,128,.25);
+  border-radius: 0 0 8px 8px;
+  font-size: 13px;
+  opacity: .75;
+}
+.igx-manage-link:hover { opacity: 1; }
+
+/* manage panel */
+.igx-manage { width: 280px; padding: 8px; }
+.igx-title { font-weight: 600; padding: 6px 8px 10px; }
+.igx-glist { display: flex; flex-direction: column; gap: 2px; max-height: 50vh; overflow-y: auto; }
+.igx-grow-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: 8px;
+}
+.igx-grow-row:hover { background: rgba(128,128,128,.12); }
+.igx-swatch {
+  all: unset;
+  flex: 0 0 auto;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--igx-c);
+  box-shadow: 0 0 0 2px rgba(128,128,128,.25);
+  cursor: pointer;
+}
+.igx-swatch:hover { box-shadow: 0 0 0 2px rgba(128,128,128,.6); }
+.igx-name {
+  all: unset;
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 30px;
+  padding: 0 8px;
+  border-radius: 6px;
+  font: 400 14px/30px var(--igx-font);
+  color: inherit;
+  cursor: text;
+}
+.igx-name:hover { background: rgba(128,128,128,.12); }
+.igx-name:focus { background: rgba(128,128,128,.18); box-shadow: inset 0 0 0 1px rgba(128,128,128,.5); }
+.igx-manage .igx-count { min-width: 16px; text-align: right; }
+.igx-del {
+  all: unset;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px; height: 28px;
+  padding: 0 6px;
+  border-radius: 6px;
+  opacity: .55;
+  cursor: pointer;
+  font: 600 12px/1 var(--igx-font);
+  white-space: nowrap;
+}
+.igx-del:hover { opacity: 1; background: rgba(255,69,58,.15); color: #ff453a; }
+.igx-del.igx-armed { opacity: 1; background: #ff453a; color: #fff; }
+.igx-add {
+  all: unset;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  border-top: 1px solid rgba(128,128,128,.25);
+  font: 500 14px/1 var(--igx-font);
+  color: #0095f6;
+  cursor: pointer;
+}
+.igx-add:hover { background: rgba(0,149,246,.1); }
+
+/* ================= Native rows: separators & truncation ================= */
+[data-igx-full] { width: 100% !important; max-width: none !important; box-sizing: border-box !important; }
+[data-igx-row] { position: relative; }
+[data-igx-row]::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -8px;
+  height: 1px;
+  background: color-mix(in srgb, rgb(var(--ig-elevated-separator, 54, 54, 54)) 55%, transparent);
+  pointer-events: none;
+}
+[data-igx-info] { min-width: 0 !important; flex: 1 1 auto !important; overflow: hidden; }
+[data-igx-info] span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ================= Home: feed switcher (replaces Instagram's tabs) ================= */
+html[data-igx-home] [data-igx-tabswrap] { display: none !important; }
+.igx-feednav {
+  position: fixed;
+  z-index: 100;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  --igx-text: rgb(var(--ig-primary-text, 245, 245, 245));
+  --igx-muted: rgb(var(--ig-secondary-text, 168, 168, 168));
+}
+.igx-feednav[hidden] { display: none; }
+.igx-feedbtn {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--igx-muted);
+  cursor: pointer;
+  transition: color .15s;
+}
+.igx-feedbtn:hover,
+.igx-feedbtn.igx-on { color: var(--igx-text); }
+.igx-feedbtn:focus-visible { outline: 2px solid #0095f6; outline-offset: 2px; }
+
+/* ================= Home: stories — circles 1.5x smaller ================= */
+/* Instagram's tray is 124px tall; with zoom it takes 124 * 0.667 ≈ 83px. */
+html[data-igx-home] [data-igx-tray] { zoom: 0.667; height: 124px !important; min-height: 0 !important; }
+html[data-igx-home] [data-igx-tray] li span { font-size: 17px !important; line-height: 1.3 !important; }
+html[data-igx-home] [data-igx-autoh] { height: auto !important; min-height: 0 !important; }
+
+/* ================= Home: 'subpage' layout (Following is its own page) ================= */
+/* Title + back arrow hidden; our own stories tray at the top, sized like the
+   zoomed native tray (item 60px, ring 58px, avatar 50px, label 11px). */
+html[data-igx-home] [data-igx-subhead] { display: none !important; }
+.igx-stories {
+  --igx-text: rgb(var(--ig-primary-text, 245, 245, 245));
+  --igx-bg: rgb(var(--ig-primary-background, 12, 16, 20));
+  --igx-stroke: rgb(var(--ig-stroke, 85, 85, 85));
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  height: 83px;
+  margin: 0 0 24px;
+  flex: 0 0 auto;
+}
+.igx-stories[hidden] { display: none; }
+.igx-st-scroll {
+  display: flex;
+  gap: 9.5px;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  padding: 5px 6px 0;
+  box-sizing: border-box;
+}
+.igx-st-scroll::-webkit-scrollbar { display: none; }
+.igx-st {
+  flex: 0 0 60px;
+  width: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  text-decoration: none !important;
+  color: var(--igx-text);
+}
+.igx-st-ring {
+  box-sizing: border-box;
+  width: 58px;
+  height: 58px;
+  padding: 2px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #ffd600, #ff7a00 30%, #ff0069 60%, #d300c5 80%, #7638fa);
+  display: flex;
+}
+.igx-st-seen .igx-st-ring { padding: 1px; background: var(--igx-stroke); }
+.igx-st-besties .igx-st-ring { background: #1cd14f; }
+.igx-st-ring img {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--igx-bg);
+  background: var(--igx-bg);
+  object-fit: cover;
+}
+.igx-st-seen .igx-st-ring img { border-width: 3px; }
+.igx-st-name {
+  max-width: 56px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 400 11px/14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  text-align: center;
+}
+.igx-st-seen .igx-st-name { opacity: .7; }
+.igx-st-arrow {
+  all: unset;
+  position: absolute;
+  top: 22px;
+  z-index: 2;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, .92);
+  color: #262626;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+  cursor: pointer;
+}
+.igx-st-prev { left: 6px; }
+.igx-st-prev svg { transform: rotate(180deg); }
+.igx-st-next { right: 6px; }
+.igx-stories.igx-st-canprev .igx-st-prev,
+.igx-stories.igx-st-cannext .igx-st-next { display: flex; }
+
+/* ================= Home: bigger posts ================= */
+html[data-igx-home] [data-igx-pw] {
+  width: var(--igx-post-w, 600px) !important;
+  max-width: 100% !important;
+}
+html[data-igx-home] [data-igx-post] [style*="min(470px"] {
+  width: calc(var(--igx-post-w, 600px) - 2px) !important;
+}
+html[data-igx-home] [data-igx-contain] video,
+html[data-igx-home] [data-igx-contain] img { object-fit: contain !important; }
+
+/* ================= Home: right sidebar pinned to the edge ================= */
+html[data-igx-home] [data-igx-rsb] {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 383px !important;
+  padding: 22px 32px 24px !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
+  scrollbar-width: none;
+  z-index: 1;
+}
+html[data-igx-home] [data-igx-rsb]::-webkit-scrollbar { display: none; }
+/* Center column: true center between the left nav and the pinned sidebar.
+   Stories span the full column; posts are centered inside it. */
+html[data-igx-home] [data-igx-feedrow] {
+  padding-left: calc(var(--igx-nav, 72px) + 24px) !important;
+  padding-right: calc(383px + 24px) !important;
+  box-sizing: border-box !important;
+  justify-content: center !important;
+}
+html[data-igx-home] [data-igx-feedrow] > :first-child {
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  max-width: 930px !important;
+}

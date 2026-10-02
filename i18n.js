@@ -1,0 +1,97 @@
+// UI strings in English / Ukrainian / Russian. The language follows
+// Instagram's interface (<html lang>), falling back to the browser language.
+// Shared by home.js and content.js (same content-script world): igxT(key, ...args).
+(() => {
+  const S = {
+    en: {
+      friends: 'Friends', strangers: 'Strangers', shops: 'Shops',
+      group: 'Group', all: 'All', groups: 'Groups', noGroup: 'No group',
+      manageGroups: 'Manage groups', manageGroupsMenu: 'Manage groups…',
+      newGroup: 'New group', addGroup: '+ New group', untitled: 'Untitled',
+      changeColor: 'Change color', deleteGroup: 'Delete group', deleteQ: 'Delete?',
+      noGroups: 'No groups', noMatches: 'No matches', emptyGroup: 'No one in this group yet',
+      follows: 'Follows', notFollowing: 'Not following', checking: 'Checking…',
+      fbNoData: 'Followers list not loaded yet',
+      fbYes: 'Follows you · data from {0}', fbNo: "Doesn't follow you · data from {0}",
+      justNow: 'just now', minAgo: '{0} min ago', hAgo: '{0} h ago', dAgo: '{0} d ago',
+      followersN: 'Followers: {0}', followingN: 'Following: {0}',
+      lastUpdate: 'Last update: {0}', manual: 'manual', auto: 'auto',
+      notUpdated: 'Not updated yet', updating: 'Updating lists… {0}',
+      updateFailed: 'Update failed ({0})', retry: 'Click to retry',
+      reloadHint: 'Click to reload lists and mute statuses',
+      posts: 'Posts', stories: 'Stories',
+      muteErr: 'Could not change: {0}. Try again',
+      loadingFollowing: 'Loading your following list…',
+      notFollowed: "You don't follow this account",
+      muteChecking: '{0}: checking… Click to mute / unmute now',
+      mutedHint: '{0} muted — hidden from your feed. Click to show',
+      shownHint: '{0} shown in your feed. Click to mute',
+      feedFollowing: 'Following', feedAlgo: 'Algorithmic',
+      prev: 'Previous', next: 'Next',
+    },
+    uk: {
+      friends: 'Друзі', strangers: 'Незнайомі', shops: 'Магазини',
+      group: 'Група', all: 'Усі', groups: 'Групи', noGroup: 'Без групи',
+      manageGroups: 'Керувати групами', manageGroupsMenu: 'Керувати групами…',
+      newGroup: 'Нова група', addGroup: '+ Нова група', untitled: 'Без назви',
+      changeColor: 'Змінити колір', deleteGroup: 'Видалити групу', deleteQ: 'Видалити?',
+      noGroups: 'Немає груп', noMatches: 'Нічого не знайдено', emptyGroup: 'У цій групі ще нікого',
+      follows: 'Стежить', notFollowing: 'Не стежить', checking: 'Перевірка…',
+      fbNoData: 'Список підписників ще не завантажено',
+      fbYes: 'Стежить за вами · дані {0}', fbNo: 'Не стежить за вами · дані {0}',
+      justNow: 'щойно', minAgo: '{0} хв тому', hAgo: '{0} год тому', dAgo: '{0} дн тому',
+      followersN: 'Підписники: {0}', followingN: 'Стежу: {0}',
+      lastUpdate: 'Оновлено: {0}', manual: 'вручну', auto: 'авто',
+      notUpdated: 'Ще не оновлювалось', updating: 'Оновлення списків… {0}',
+      updateFailed: 'Помилка оновлення ({0})', retry: 'Натисніть, щоб повторити',
+      reloadHint: 'Натисніть, щоб оновити списки й статуси приховування',
+      posts: 'Дописи', stories: 'Історії',
+      muteErr: 'Не вдалося змінити: {0}. Спробуйте ще',
+      loadingFollowing: 'Завантаження списку «Стежу»…',
+      notFollowed: 'Ви не стежите за цим акаунтом',
+      muteChecking: '{0}: перевірка… Натисніть, щоб змінити',
+      mutedHint: '{0} приховано зі стрічки. Натисніть, щоб показувати',
+      shownHint: '{0} показуються у стрічці. Натисніть, щоб приховати',
+      feedFollowing: 'Стежу', feedAlgo: 'Рекомендації',
+      prev: 'Назад', next: 'Далі',
+    },
+    ru: {
+      friends: 'Друзья', strangers: 'Незнакомые', shops: 'Магазины',
+      group: 'Группа', all: 'Все', groups: 'Группы', noGroup: 'Без группы',
+      manageGroups: 'Управление группами', manageGroupsMenu: 'Управление группами…',
+      newGroup: 'Новая группа', addGroup: '+ Новая группа', untitled: 'Без названия',
+      changeColor: 'Сменить цвет', deleteGroup: 'Удалить группу', deleteQ: 'Удалить?',
+      noGroups: 'Нет групп', noMatches: 'Ничего не найдено', emptyGroup: 'В этой группе пока никого',
+      follows: 'Читает', notFollowing: 'Не читает', checking: 'Проверка…',
+      fbNoData: 'Список подписчиков ещё не загружен',
+      fbYes: 'Подписан(а) на вас · данные {0}', fbNo: 'Не подписан(а) на вас · данные {0}',
+      justNow: 'только что', minAgo: '{0} мин назад', hAgo: '{0} ч назад', dAgo: '{0} дн назад',
+      followersN: 'Подписчики: {0}', followingN: 'Подписки: {0}',
+      lastUpdate: 'Обновлено: {0}', manual: 'вручную', auto: 'авто',
+      notUpdated: 'Ещё не обновлялось', updating: 'Обновление списков… {0}',
+      updateFailed: 'Ошибка обновления ({0})', retry: 'Нажмите, чтобы повторить',
+      reloadHint: 'Нажмите, чтобы обновить списки и статусы скрытия',
+      posts: 'Публикации', stories: 'Истории',
+      muteErr: 'Не удалось изменить: {0}. Попробуйте ещё',
+      loadingFollowing: 'Загрузка списка подписок…',
+      notFollowed: 'Вы не подписаны на этот аккаунт',
+      muteChecking: '{0}: проверка… Нажмите, чтобы изменить',
+      mutedHint: '{0} скрыты из ленты. Нажмите, чтобы показывать',
+      shownHint: '{0} показываются в ленте. Нажмите, чтобы скрыть',
+      feedFollowing: 'Подписки', feedAlgo: 'Рекомендации',
+      prev: 'Назад', next: 'Далее',
+    },
+  };
+  const LOCALES = { en: 'en-GB', uk: 'uk-UA', ru: 'ru-RU' };
+
+  const lang = () => {
+    const l = (document.documentElement.lang || navigator.language || 'en').slice(0, 2).toLowerCase();
+    return S[l] ? l : 'en';
+  };
+  globalThis.igxLang = lang;
+  globalThis.igxLocale = () => LOCALES[lang()];
+  globalThis.igxT = (key, ...args) => {
+    const s = S[lang()][key] ?? S.en[key] ?? key;
+    return args.length ? s.replace(/\{(\d)\}/g, (_, i) => args[i]) : s;
+  };
+})();

@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="head">
+    <img src="icons/icon48.png" width="32" height="32" alt="">
+    <div>
+      <h1 data-i18n="extName"></h1>
+      <div class="muted" id="version"></div>
+    </div>
+  </header>
+
+  <section class="update" id="update" hidden>
+    <div class="update-title" id="update-title"></div>
+    <div class="notes" id="update-notes"></div>
+    <a class="btn btn-primary" id="update-link" target="_blank" rel="noopener" data-i18n="download"></a>
+  </section>
+
+  <section class="news">
+    <h2 data-i18n="whatsNew"></h2>
+    <div id="current-notes"></div>
+    <div id="history" hidden></div>
+    <button type="button" class="link" id="history-toggle" data-i18n="fullHistory"></button>
+  </section>
+
+  <footer class="foot">
+    <span class="muted" id="checked"></span>
+    <button type="button" class="btn" id="check" data-i18n="checkNow"></button>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

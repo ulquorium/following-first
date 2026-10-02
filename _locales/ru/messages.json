@@ -1,0 +1,73 @@
+{
+  "langCode": {
+    "message": "ru"
+  },
+  "extName": {
+    "message": "Instagram Follow Lists+"
+  },
+  "extDescription": {
+    "message": "Широкие списки подписчиков и подписок с группами и отметкой «читает вас»; аккуратная лента с крупными публикациями."
+  },
+  "versionLabel": {
+    "message": "Версия $VALUE$",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "updateAvailable": {
+    "message": "Доступна версия $VALUE$",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "download": {
+    "message": "Скачать"
+  },
+  "whatsNew": {
+    "message": "Что нового"
+  },
+  "fullHistory": {
+    "message": "Вся история изменений"
+  },
+  "hideHistory": {
+    "message": "Скрыть историю"
+  },
+  "noNotes": {
+    "message": "Для этой версии нет описания."
+  },
+  "checkedAt": {
+    "message": "Проверено: $VALUE$",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "neverChecked": {
+    "message": "Ещё не проверялось"
+  },
+  "checksOff": {
+    "message": "Проверка обновлений ещё не настроена"
+  },
+  "checkNow": {
+    "message": "Проверить"
+  },
+  "checking": {
+    "message": "Проверка…"
+  },
+  "notifTitle": {
+    "message": "Вышла Instagram Follow Lists+ $VALUE$",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "notifDefault": {
+    "message": "Нажмите, чтобы скачать новую версию."
+  }
+}

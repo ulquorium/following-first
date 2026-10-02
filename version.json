@@ -1,0 +1,9 @@
+{
+  "version": "1.10.0",
+  "url": "https://github.com/OWNER/REPO/releases/tag/v1.10.0",
+  "notes": {
+    "en": "• Ukrainian and Russian interface\n• Update notifications",
+    "uk": "• Українська й російська мови\n• Сповіщення про оновлення",
+    "ru": "• Украинский и русский языки\n• Уведомления об обновлениях"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "langCode": {
+    "message": "en"
+  },
+  "extName": {
+    "message": "Instagram Follow Lists+"
+  },
+  "extDescription": {
+    "message": "Wider Followers/Following lists with contact groups and a follows-you indicator; cleaner home feed with bigger uncropped posts."
+  },
+  "versionLabel": {
+    "message": "Version $VALUE$",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "updateAvailable": {
+    "message": "Version $VALUE$ is available",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "download": {
+    "message": "Download"
+  },
+  "whatsNew": {
+    "message": "What's new"
+  },
+  "fullHistory": {
+    "message": "Full changelog"
+  },
+  "hideHistory": {
+    "message": "Hide history"
+  },
+  "noNotes": {
+    "message": "No notes for this version."
+  },
+  "checkedAt": {
+    "message": "Checked: $VALUE$",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "neverChecked": {
+    "message": "Not checked yet"
+  },
+  "checksOff": {
+    "message": "Update checks are not set up yet"
+  },
+  "checkNow": {
+    "message": "Check"
+  },
+  "checking": {
+    "message": "Checking…"
+  },
+  "notifTitle": {
+    "message": "Instagram Follow Lists+ $VALUE$ is out",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "notifDefault": {
+    "message": "Click to download the new version."
+  }
+}
