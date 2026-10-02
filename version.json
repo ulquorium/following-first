@@ -1,9 +1,9 @@
 {
-  "version": "1.11.0",
-  "url": "https://github.com/ulquorium/instagram-follow-lists/releases/tag/v1.11.0",
+  "version": "1.12.0",
+  "url": "https://github.com/ulquorium/following-first/releases/tag/v1.12.0",
   "notes": {
-    "en": "• Groups and tags sync between your computers through your Chrome account (when Chrome sync for extensions is on).\n• The extension now has a fixed ID, so your data stays even if you move its folder.",
-    "uk": "• Групи й позначки синхронізуються між комп'ютерами через акаунт Chrome (якщо в Chrome увімкнена синхронізація розширень).\n• Розширення має постійний ID — дані не губляться, якщо перенести папку.",
-    "ru": "• Группы и метки синхронизируются между компьютерами через аккаунт Chrome (если в Chrome включена синхронизация расширений).\n• У расширения постоянный ID — данные не теряются при переносе папки."
+    "en": "• New name: Following First — Instagram on your terms.\n• The extension popup now has an “About” link to the description and help on GitHub.",
+    "uk": "• Нова назва: Following First — Instagram на твоїх умовах.\n• У вікні розширення з'явилося посилання «Про розширення» — опис і довідка на GitHub.",
+    "ru": "• Новое название: Following First — Instagram на ваших условиях.\n• В окне расширения появилась ссылка «О расширении» — описание и справка на GitHub."
   }
 }

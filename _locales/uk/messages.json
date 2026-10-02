@@ -3,10 +3,10 @@
     "message": "uk"
   },
   "extName": {
-    "message": "Instagram Follow Lists+"
+    "message": "Following First"
   },
   "extDescription": {
-    "message": "Ширші списки підписників і підписок з групами та позначкою «стежить за вами»; охайніша стрічка з більшими дописами."
+    "message": "Instagram на твоїх умовах: спершу стрічка підписок, групи для людей, хто стежить у відповідь, більші дописи."
   },
   "versionLabel": {
     "message": "Версія $VALUE$",
@@ -60,7 +60,7 @@
     "message": "Перевірка…"
   },
   "notifTitle": {
-    "message": "Вийшла Instagram Follow Lists+ $VALUE$",
+    "message": "Following First: доступна версія $VALUE$",
     "placeholders": {
       "value": {
         "content": "$1"
@@ -69,5 +69,8 @@
   },
   "notifDefault": {
     "message": "Натисніть, щоб завантажити нову версію."
+  },
+  "about": {
+    "message": "Про розширення"
   }
 }

@@ -8,6 +8,12 @@
   document.documentElement.lang = lang;
   document.querySelectorAll('[data-i18n]').forEach((e) => { e.textContent = t(e.dataset.i18n); });
   $('version').textContent = t('versionLabel', [version]);
+  // Link to the GitHub page (README) from manifest.homepage_url.
+  const home = chrome.runtime.getManifest().homepage_url;
+  if (home) {
+    $('about').href = home;
+    $('about').hidden = $('about-sep').hidden = false;
+  }
 
   function compareVersions(a, b) {
     const pa = String(a).split('.').map((n) => parseInt(n, 10) || 0);

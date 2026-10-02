@@ -3,10 +3,10 @@
     "message": "ru"
   },
   "extName": {
-    "message": "Instagram Follow Lists+"
+    "message": "Following First"
   },
   "extDescription": {
-    "message": "Широкие списки подписчиков и подписок с группами и отметкой «читает вас»; аккуратная лента с крупными публикациями."
+    "message": "Instagram на ваших условиях: сначала лента подписок, группы для людей, кто читает в ответ, крупные публикации."
   },
   "versionLabel": {
     "message": "Версия $VALUE$",
@@ -60,7 +60,7 @@
     "message": "Проверка…"
   },
   "notifTitle": {
-    "message": "Вышла Instagram Follow Lists+ $VALUE$",
+    "message": "Following First: доступна версия $VALUE$",
     "placeholders": {
       "value": {
         "content": "$1"
@@ -69,5 +69,8 @@
   },
   "notifDefault": {
     "message": "Нажмите, чтобы скачать новую версию."
+  },
+  "about": {
+    "message": "О расширении"
   }
 }

@@ -1,4 +1,4 @@
-// Instagram Follow Lists+
+// Following First (for Instagram)
 // - Followers/Following modals: full height, +128px wider
 // - Personal groups per contact (create / rename / recolor / delete)
 // - Filter by group (renders from saved data, zero requests)

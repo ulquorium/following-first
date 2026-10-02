@@ -4,7 +4,7 @@
 // code is ever loaded from the network.
 //
 // Empty UPDATE_URL = update checks disabled (also used for a Web Store build).
-const UPDATE_URL = 'https://raw.githubusercontent.com/ulquorium/instagram-follow-lists/main/version.json';
+const UPDATE_URL = 'https://raw.githubusercontent.com/ulquorium/following-first/main/version.json';
 // e.g. 'https://raw.githubusercontent.com/<owner>/<repo>/main/version.json'
 
 const ALARM = 'update-check';

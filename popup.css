@@ -86,3 +86,6 @@ li + li { margin-top: 2px; }
   cursor: pointer;
 }
 .link:hover { text-decoration: underline; }
+.about { color: var(--accent); text-decoration: none; }
+.about:hover { text-decoration: underline; }
+.about[hidden], #about-sep[hidden] { display: none; }

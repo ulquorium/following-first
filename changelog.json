@@ -1,5 +1,20 @@
 [
   {
+    "version": "1.12.0",
+    "uk": [
+      "Нова назва: Following First — Instagram на твоїх умовах.",
+      "У вікні розширення з'явилося посилання «Про розширення» — опис і довідка на GitHub."
+    ],
+    "en": [
+      "New name: Following First — Instagram on your terms.",
+      "The extension popup now has an “About” link to the description and help on GitHub."
+    ],
+    "ru": [
+      "Новое название: Following First — Instagram на ваших условиях.",
+      "В окне расширения появилась ссылка «О расширении» — описание и справка на GitHub."
+    ]
+  },
+  {
     "version": "1.11.0",
     "uk": [
       "Групи й позначки синхронізуються між комп'ютерами через акаунт Chrome (якщо в Chrome увімкнена синхронізація розширень).",

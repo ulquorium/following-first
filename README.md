@@ -1,8 +1,8 @@
-# Instagram Follow Lists+
+# Following First — for Instagram
 
-A Chrome extension that makes instagram.com on desktop easier to manage: a proper
-Followers / Following list with your own groups, and a calmer home page that opens
-the feed of people you actually follow.
+Instagram on your terms. A Chrome extension that turns instagram.com back into a social
+network: the feed of people you actually follow comes first, your Followers / Following
+lists get your own groups, and you decide what you see — not the algorithm.
 
 *Українською: [README.uk.md](README.uk.md).*
 
@@ -36,9 +36,9 @@ account, server or tracking — everything happens in your browser.
 
 The extension is not in the Chrome Web Store; it is installed from a GitHub release.
 
-1. Open the [latest release](https://github.com/ulquorium/instagram-follow-lists/releases/latest) and download
-   `instagram-follow-lists-X.Y.Z.zip` under **Assets**.
-2. Unzip it into a folder you will keep, e.g. `~/Extensions/instagram-follow-lists`.
+1. Open the [latest release](https://github.com/ulquorium/following-first/releases/latest) and download
+   `following-first-X.Y.Z.zip` under **Assets**.
+2. Unzip it into a folder you will keep, e.g. `~/Extensions/following-first`.
 3. Open `chrome://extensions` and turn on **Developer mode** (top right).
 4. Click **Load unpacked** and select that folder.
 5. Reload instagram.com.

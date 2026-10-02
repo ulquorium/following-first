@@ -1,4 +1,9 @@
-# Instagram Follow Lists+ — notes for Claude
+# Following First (for Instagram) — notes for Claude
+
+Formerly "Instagram Follow Lists+" (repo renamed to `ulquorium/following-first` in 1.12.0).
+The idea: Instagram as a social network again — you decide what you see (the
+Following feed, your own groups), not the algorithm. Sibling: Subscriptions
+First for YouTube.
 
 A personal Chrome extension (Manifest V3, no build step, plain JS/CSS) that
 restyles and extends instagram.com. The owner is not a developer, so

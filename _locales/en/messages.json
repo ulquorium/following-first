@@ -3,10 +3,10 @@
     "message": "en"
   },
   "extName": {
-    "message": "Instagram Follow Lists+"
+    "message": "Following First"
   },
   "extDescription": {
-    "message": "Wider Followers/Following lists with contact groups and a follows-you indicator; cleaner home feed with bigger uncropped posts."
+    "message": "Instagram on your terms: the Following feed first, groups for people you follow, who follows you back, bigger posts."
   },
   "versionLabel": {
     "message": "Version $VALUE$",
@@ -60,7 +60,7 @@
     "message": "Checking…"
   },
   "notifTitle": {
-    "message": "Instagram Follow Lists+ $VALUE$ is out",
+    "message": "Following First $VALUE$ is out",
     "placeholders": {
       "value": {
         "content": "$1"
@@ -69,5 +69,8 @@
   },
   "notifDefault": {
     "message": "Click to download the new version."
+  },
+  "about": {
+    "message": "About"
   }
 }

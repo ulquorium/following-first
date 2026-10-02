@@ -1,6 +1,6 @@
-# Instagram Follow Lists+
+# Following First — для Instagram
 
-Chrome-розширення для instagram.com: зручні списки підписників і підписок, охайніша головна.
+Instagram на твоїх умовах. Chrome-розширення, яке повертає instagram.com соціальність: спершу стрічка людей, на яких ти підписаний, свої групи в списках підписок — і ти сам вирішуєш, що бачити, а не алгоритм.
 Інтерфейс українською, англійською й російською (за мовою Instagram; вікно розширення — за мовою Chrome).
 
 *English: [README.md](README.md).*
@@ -21,7 +21,7 @@ Chrome-розширення для instagram.com: зручні списки пі
 - Більші дописи (600 px) з рамкою за пропорціями фото/відео — вертикальні більше не обрізаються.
 
 ## Встановлення
-1. Завантаж zip з [останнього релізу](https://github.com/ulquorium/instagram-follow-lists/releases/latest) (розділ **Assets**) і розпакуй у постійну папку, наприклад `~/Extensions/instagram-follow-lists`.
+1. Завантаж zip з [останнього релізу](https://github.com/ulquorium/following-first/releases/latest) (розділ **Assets**) і розпакуй у постійну папку, наприклад `~/Extensions/following-first`.
 2. Відкрий `chrome://extensions` і ввімкни **Режим розробника**.
 3. **Завантажити розпаковане** → вибери цю папку.
 4. Перезавантаж Instagram.
@@ -45,7 +45,7 @@ Chrome-розширення для instagram.com: зручні списки пі
    ```json
    { "version": "1.11.0", "uk": ["…"], "en": ["…"], "ru": ["…"] }
    ```
-2. На гілці `main`: `node scripts/release.mjs 1.11.0` — оновлює `version` у `manifest.json`, пише `version.json` (notes із changelog, посилання на реліз `v1.11.0`), перевіряє синтаксис `.js`/`.json` і паритет локалізацій, збирає `dist/instagram-follow-lists-1.11.0.zip` лише з файлів розширення, комітить і ставить тег `v1.11.0`. (`--no-git` — без коміту й тегу.)
+2. На гілці `main`: `node scripts/release.mjs 1.11.0` — оновлює `version` у `manifest.json`, пише `version.json` (notes із changelog, посилання на реліз `v1.11.0`), перевіряє синтаксис `.js`/`.json` і паритет локалізацій, збирає `dist/following-first-1.11.0.zip` лише з файлів розширення, комітить і ставить тег `v1.11.0`. (`--no-git` — без коміту й тегу.)
 3. `git push --follow-tags` — GitHub Action (`.github/workflows/release.yml`) збирає zip із тегу й створює реліз із текстом із changelog (~1 хв).
 4. Протягом ~6 годин усі користувачі отримують сповіщення.
 
