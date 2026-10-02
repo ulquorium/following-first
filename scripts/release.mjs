@@ -150,6 +150,12 @@ function build({ store }) {
       if (off === src && !/^const UPDATE_URL = '';$/m.test(src)) fail('UPDATE_URL line not found in background.js');
       data = Buffer.from(off, 'utf8');
     }
+    if (store && f === 'manifest.json') {
+      // The Web Store assigns its own key/ID and rejects a manifest with "key".
+      const m = JSON.parse(data.toString('utf8'));
+      delete m.key;
+      data = Buffer.from(JSON.stringify(m, null, 2) + '\n', 'utf8');
+    }
     return { name: f, data };
   });
   mkdirSync(join(ROOT, 'dist'), { recursive: true });

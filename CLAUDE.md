@@ -13,6 +13,7 @@ needs all three (keep them short — check widths, e.g. the 104px indicator).
 | `manifest.json` | — | MV3 manifest. Permissions: `storage`, `alarms`, `notifications`. Name/description from `_locales`. Two content scripts on `https://www.instagram.com/*`. |
 | `i18n.js` | `document_start`, before `home.js` | `igxT(key, …args)` / `igxLocale()` for content scripts: en/uk/ru by Instagram's `<html lang>`. Shared with `content.js` (same content-script world). |
 | `home.js` | `document_start` | Home page: Following feed by default, feed switcher under the logo, pinned right sidebar, centered column, smaller stories, bigger uncropped posts. |
+| `sync-store.js` | `document_idle`, before `content.js` | `syncStore.read/write/onChange`: JSON values in `chrome.storage.sync`, split into ≤8 KB chunks. Shared verbatim with the YouTube extension. |
 | `content.js` | `document_idle` | Followers/Following modal: size, groups, filters, "follows you" indicator, followers sync. |
 | `styles.css` | with `content.js` | All styles for both scripts (injected on every Instagram page). |
 | `background.js` | service worker | Update checks (version.json), badges ↑ / NEW, system notification. |
@@ -24,7 +25,7 @@ needs all three (keep them short — check widths, e.g. the 104px indicator).
 | `.github/workflows/release.yml` | on tag `v*` | Builds the zip and creates the GitHub release with notes from the changelog. |
 
 Bump `version` in `manifest.json` for every delivered change (semver-ish: patch
-for fixes, minor for features). Current: 1.10.0. Release through
+for fixes, minor for features). Current: see `manifest.json`. Release through
 `scripts/release.mjs` (see README.uk.md, "Випуск нової версії"): add the changelog entry first.
 
 ## Features and how they work
@@ -185,9 +186,19 @@ mutes:     { [username]: { posts, stories, ts } } // feed mute status, 7-day cac
 lastSync:  { ts, manual }                     // last successful lists update
 syncLock:  timestamp                           // transient
 ```
-Local (not sync) storage: per browser profile; lost if the extension is
-removed or loaded from a different folder (unpacked extension id depends on
-the path). Group edits use a debounced save plus an echo filter
+`groups` and `tags` are **also** in `chrome.storage.sync` (via `sync-store.js`,
+keys `groups`, `groups.0…`, `tags`, `tags.0…`): Chrome syncs them between the
+owner's computers when Chrome sync (Extensions) is on. On load the synced copy
+wins and is mirrored into local; with no synced copy yet, local data is
+uploaded. Writes go to local immediately and to sync debounced (1.5 s);
+changes from other computers arrive via `syncStore.onChange` → `store.set`.
+A value too big for sync (100 KB total, ~3,700 tags) is removed from sync
+rather than left stale. Everything else is a cache and stays local.
+`manifest.json` has a fixed `key`, so the extension ID
+(`cilfjcmgnljkdmhpdaigcnfmbmaacicm`) is the same in any folder and on any
+computer — required for sync and for keeping local data when the folder
+moves. The private key is not kept (not needed for unpacked installs); the
+`--store` build strips `key`. Group edits use a debounced save plus an echo filter
 (`groupEchoes`) so `storage.onChanged` doesn't overwrite text mid-typing.
 Always look groups up by id (`groupById`) — objects get replaced on every
 storage change.
@@ -233,7 +244,7 @@ storage change.
   the browser instead.
 
 ## Shared with the YouTube extension
-`background.js`, `popup.html`, `popup.js`, `scripts/release.mjs` and
+`background.js`, `popup.html`, `popup.js`, `sync-store.js`, `scripts/release.mjs` and
 `.github/workflows/release.yml` are **identical** in this repo and in
 `ulquorium/youtube-subs-first` (sibling folder `../youtube-subs-first`). Only
 `UPDATE_URL` (background.js), `ZIP_NAME` (release.mjs) and the palette in
@@ -245,7 +256,7 @@ The owner's Chrome tab is available through Claude in Chrome. Instagram's CSP
 blocks `eval` from page scripts but allows `blob:` scripts, so:
 
 1. Build a bundle: CSS injected into a `<style id="cc-tall-modal">` +
-   a `chrome.storage` shim (backed by `sessionStorage['__igxMem']` so data
+   a `chrome.storage` shim (`local` **and** `sync` areas — `sync-store.js` must be in the bundle before `content.js`; backed by `sessionStorage['__igxMem']` so data
    survives reloads, fires `onChanged` listeners) + the script under test.
 2. In the page, append a hidden `<input type="file">` whose `change` handler
    loads the file via `script.src = URL.createObjectURL(file)`.
@@ -263,6 +274,6 @@ its Next arrow and measure slide offsets). Opening the Following modal: click th
 the profile header.
 
 ## Ideas discussed but not built
-- Export/import of groups to a file.
+- Export/import of groups to a file (backup independent of Chrome sync).
 - On/off switches per tweak in the toolbar popup.
 - Hiding other Instagram blocks (Reels, suggestions, etc.).

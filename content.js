@@ -68,7 +68,11 @@
     followerSet = f && f.uid === uid ? new Set(f.users) : null;
   }
 
-  store.get(['groups', 'tags', 'people', 'followers', 'following', 'mutes', 'lastSync'], (r) => {
+  // Groups and tags also live in chrome.storage.sync (sync-store.js), so they
+  // follow the user to other computers and survive a reinstall when Chrome
+  // sync is on. The synced copy wins; if there is none yet, local data is
+  // uploaded. Lists, people and mutes are caches and stay local only.
+  store.get(['groups', 'tags', 'people', 'followers', 'following', 'mutes', 'lastSync'], async (r) => {
     lastSync = r.lastSync || null;
     following = r.following || null;
     mutes = r.mutes || {};
@@ -76,9 +80,19 @@
     tags = r.tags || {};
     people = r.people || {};
     setFollowers(r.followers || null);
+    const [sGroups, sTags] = await Promise.all([syncStore.read('groups'), syncStore.read('tags')]);
+    if (Array.isArray(sGroups)) groups = sGroups;
+    else if (Array.isArray(r.groups)) syncStore.write('groups', groups);
+    if (sTags && typeof sTags === 'object') tags = sTags;
+    else if (r.tags) syncStore.write('tags', tags);
+    if (Array.isArray(sGroups) || sTags) store.set({ groups, tags });
     ready = true;
     schedule();
   });
+
+  // Changes made on another computer (or another tab).
+  syncStore.onChange('groups', (v) => { if (Array.isArray(v)) store.set({ groups: v }); });
+  syncStore.onChange('tags', (v) => { if (v && typeof v === 'object') store.set({ tags: v }); });
 
   chrome.storage.onChanged.addListener((ch, area) => {
     if (area !== 'local') return;
@@ -99,16 +113,22 @@
 
   let groupSaveTimer = null;
   const groupEchoes = new Set();
+  let syncTimer = null;
+  const writeSync = () => {
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(() => { syncStore.write('groups', groups); syncStore.write('tags', tags); }, 1500);
+  };
   const writeGroups = (extra) => {
     groupEchoes.add(JSON.stringify(groups));
     store.set({ groups, ...(extra || {}) });
+    writeSync();
   };
   const saveGroups = (debounce) => {
     clearTimeout(groupSaveTimer);
     if (debounce) groupSaveTimer = setTimeout(writeGroups, 300);
     else writeGroups();
   };
-  const saveTags = () => store.set({ tags, people });
+  const saveTags = () => { store.set({ tags, people }); writeSync(); };
 
   // ---------- dialog detection ----------
   function isFollowDialog(d) {

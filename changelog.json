@@ -1,5 +1,20 @@
 [
   {
+    "version": "1.11.0",
+    "uk": [
+      "Групи й позначки синхронізуються між комп'ютерами через акаунт Chrome (якщо в Chrome увімкнена синхронізація розширень).",
+      "Розширення має постійний ID — дані не губляться, якщо перенести папку."
+    ],
+    "en": [
+      "Groups and tags sync between your computers through your Chrome account (when Chrome sync for extensions is on).",
+      "The extension now has a fixed ID, so your data stays even if you move its folder."
+    ],
+    "ru": [
+      "Группы и метки синхронизируются между компьютерами через аккаунт Chrome (если в Chrome включена синхронизация расширений).",
+      "У расширения постоянный ID — данные не теряются при переносе папки."
+    ]
+  },
+  {
     "version": "1.10.1",
     "uk": [
       "Внутрішнє прибирання коду, видимих змін немає."
