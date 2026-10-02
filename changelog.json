@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.10.1",
+    "uk": [
+      "Внутрішнє прибирання коду, видимих змін немає."
+    ],
+    "en": [
+      "Internal cleanup, no visible changes."
+    ],
+    "ru": [
+      "Внутренняя чистка кода, видимых изменений нет."
+    ]
+  },
+  {
     "version": "1.10.0",
     "en": [
       "Ukrainian and Russian interface; the language follows Instagram's interface",

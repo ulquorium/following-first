@@ -1,9 +1,9 @@
 {
-  "version": "1.10.0",
-  "url": "https://github.com/ulquorium/instagram-follow-lists/releases/tag/v1.10.0",
+  "version": "1.10.1",
+  "url": "https://github.com/ulquorium/instagram-follow-lists/releases/tag/v1.10.1",
   "notes": {
-    "en": "• Ukrainian and Russian interface\n• Update notifications",
-    "uk": "• Українська й російська мови\n• Сповіщення про оновлення",
-    "ru": "• Украинский и русский языки\n• Уведомления об обновлениях"
+    "en": "• Internal cleanup, no visible changes.",
+    "uk": "• Внутрішнє прибирання коду, видимих змін немає.",
+    "ru": "• Внутренняя чистка кода, видимых изменений нет."
   }
 }

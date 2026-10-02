@@ -14,7 +14,7 @@ needs all three (keep them short — check widths, e.g. the 104px indicator).
 | `i18n.js` | `document_start`, before `home.js` | `igxT(key, …args)` / `igxLocale()` for content scripts: en/uk/ru by Instagram's `<html lang>`. Shared with `content.js` (same content-script world). |
 | `home.js` | `document_start` | Home page: Following feed by default, feed switcher under the logo, pinned right sidebar, centered column, smaller stories, bigger uncropped posts. |
 | `content.js` | `document_idle` | Followers/Following modal: size, groups, filters, "follows you" indicator, followers sync. |
-| `style.css` | with `content.js` | All styles for both scripts (injected on every Instagram page). |
+| `styles.css` | with `content.js` | All styles for both scripts (injected on every Instagram page). |
 | `background.js` | service worker | Update checks (version.json), badges ↑ / NEW, system notification. |
 | `popup.html/.css/.js` | toolbar popup | Version, available update, "What's new" from `changelog.json`, Check button. Light/dark via `prefers-color-scheme`. |
 | `changelog.json` | — | `[{ version, en: [], uk: [], ru: [] }]`, newest first. Source for popup, version.json notes and release notes. |
@@ -231,6 +231,13 @@ storage change.
   a higher manifest version, cleared by opening the popup.
   `chrome.runtime.reload()` in that setup disables the extension — relaunch
   the browser instead.
+
+## Shared with the YouTube extension
+`background.js`, `popup.html`, `popup.js`, `scripts/release.mjs` and
+`.github/workflows/release.yml` are **identical** in this repo and in
+`ulquorium/youtube-subs-first` (sibling folder `../youtube-subs-first`). Only
+`UPDATE_URL` (background.js), `ZIP_NAME` (release.mjs) and the palette in
+`popup.css` differ; `_locales` have the same keys. Change them in both.
 
 ## Testing on the live page (no install needed)
 

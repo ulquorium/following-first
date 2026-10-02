@@ -1,75 +1,78 @@
 # Instagram Follow Lists+
 
-Chrome extension for instagram.com. Interface in English, Ukrainian and Russian — the language follows Instagram's interface (the toolbar popup follows Chrome's language).
+Chrome-розширення для instagram.com: зручні списки підписників і підписок, охайніша головна.
+Інтерфейс українською, англійською й російською (за мовою Instagram; вікно розширення — за мовою Chrome).
 
-**Followers / Following lists**
-- Full-height, wider modal with subtle separators.
-- Personal groups for each contact (Friends, Strangers, Shops by default); create, rename, recolor and delete them.
-- Group filters above the list (instant, no extra requests to Instagram).
-- "Follows" / "Not following" indicator next to each contact (your followers list is refreshed at most once a day).
-- Mute controls for posts and stories right in the list: see and change whether an account appears in your feed.
-- Follow / Following / Remove buttons have one width, so rows don't jump when you (un)follow.
+*English below.*
 
-**Home page**
-- Opens the Following feed by default. Feed tabs are replaced by two icons under the Instagram logo: Following and Algorithmic.
-- Right sidebar pinned to the right edge; feed column centered.
-- Story circles 1.5× smaller, so more fit in a row.
-- Works with both Instagram layouts: when Following is a separate page (with a back arrow and no stories), the title is hidden and the stories row is added back, so it looks the same as the tabs version.
-- Bigger posts (600px wide) with the frame following the photo/video proportions — vertical posts are no longer cropped.
+**Списки підписників / підписок**
+- Вікно на всю висоту й ширше, з тонкими розділювачами.
+- Власні групи для кожного контакту (за замовчуванням Друзі, Незнайомці, Магазини): створення, перейменування, колір, видалення.
+- Фільтри за групами над списком — миттєво, без зайвих запитів до Instagram.
+- Позначка «Стежить» / «Не стежить» біля кожного контакту (список підписників оновлюється не частіше разу на добу).
+- Вимкнення дописів і сторіз акаунта у стрічці прямо зі списку.
+- Кнопки «Стежити» / «Ви стежите» / «Видалити» однакової ширини — рядки не стрибають.
 
-**Updates**
-- The extension checks a small `version.json` file every 6 hours. When a new version is out you get a **↑** badge on the icon and a system notification; clicking it opens the release page.
-- After you update, the icon shows **NEW** until you open the popup. The popup shows the version, what's new, the full changelog and a **Check** button.
+**Головна**
+- За замовчуванням стрічка «Підписки». Вкладки замінені двома іконками під логотипом: Підписки й Алгоритмічна.
+- Правий сайдбар притиснутий до краю, стрічка по центру.
+- Кружечки сторіз у 1,5 раза менші — у рядок влазить більше.
+- Працює з обома варіантами Instagram (вкладки або окрема сторінка «Підписки» без сторіз — тоді ряд сторіз додається).
+- Більші дописи (600 px) з рамкою за пропорціями фото/відео — вертикальні більше не обрізаються.
 
-## Install
-1. Download the zip from the latest GitHub release and unzip it into a folder.
-2. Open `chrome://extensions` and turn on **Developer mode**.
-3. Click **Load unpacked** and select that folder.
-4. Reload Instagram.
+## Встановлення
+1. Завантаж zip з [останнього релізу](https://github.com/ulquorium/instagram-follow-lists/releases/latest) (розділ **Assets**) і розпакуй у постійну папку, наприклад `~/Extensions/instagram-follow-lists`.
+2. Відкрий `chrome://extensions` і ввімкни **Режим розробника**.
+3. **Завантажити розпаковане** → вибери цю папку.
+4. Перезавантаж Instagram.
 
-## Update
-Unzip the new release **over the same folder** (replace the files), then click ↻ on the extension card in `chrome://extensions`. Always keep the same folder: loading the extension from a different folder creates a new extension, and your groups won't carry over.
+## Оновлення
+Розширення раз на 6 годин перевіряє, чи вийшла нова версія. Якщо так — на іконці **↑** і системне сповіщення; клік відкриває сторінку релізу.
+Розпакуй новий zip **поверх тієї ж папки** і натисни ↻ на картці розширення в `chrome://extensions`. Папку не міняй: з іншої папки Chrome вважає це новим розширенням, і групи не перенесуться.
+Після оновлення на іконці **NEW**, доки не відкриєш вікно розширення («Що нового», уся історія змін, кнопка «Перевірити»).
 
-## Setting up update notifications (one time)
-1. Create a **public** GitHub repository and push this folder to its `main` branch.
-   `version.json` is read from `raw.githubusercontent.com`, which works only for public repositories. For a private repository put `version.json` somewhere public instead (a separate public repo, a gist, or GitHub Pages) and set `UPDATE_URL` to that address by hand.
-2. Run `node scripts/release.mjs --setup <owner>/<repo>` — it writes `UPDATE_URL` at the top of `background.js` and fixes the link in `version.json`. Commit and push.
+## Приватність
+Розширення нічого не збирає й нікуди не передає. Запити йдуть лише на Instagram (від твого імені, у темпі людини) і на GitHub за файлом `version.json`. Групи й налаштування зберігаються локально в браузері.
 
-While `UPDATE_URL` is empty, update checks are off (the popup says so).
+## Випуск нової версії (для автора)
+Потрібні Node 18+ і git.
 
-## Releasing a new version
-Requires Node 18+ and git; no other tools.
-
-1. Add the new version as the **first** entry of `changelog.json`, in all three languages:
+1. Додай нову версію **першим** записом у `changelog.json`, трьома мовами:
    ```json
-   { "version": "1.11.0", "en": ["…"], "uk": ["…"], "ru": ["…"] }
+   { "version": "1.11.0", "uk": ["…"], "en": ["…"], "ru": ["…"] }
    ```
-2. On the `main` branch, run `node scripts/release.mjs 1.11.0`. It
-   - sets `version` in `manifest.json` and writes `version.json` (notes from the changelog, link to the `v1.11.0` release page);
-   - checks the syntax of every `.js` and `.json` file, that all `_locales` have the same keys and every changelog entry has all three languages;
-   - builds `dist/instagram-follow-lists-1.11.0.zip` with only the extension files;
-   - commits everything and creates the tag `v1.11.0`.
-   (`--no-git` skips the commit and the tag.)
-3. `git push --follow-tags`. The GitHub Action (`.github/workflows/release.yml`) builds the zip again from the tag and creates the release with the changelog text.
-4. Within ~6 hours every user gets the notification.
+2. На гілці `main`: `node scripts/release.mjs 1.11.0` — оновлює `version` у `manifest.json`, пише `version.json` (notes із changelog, посилання на реліз `v1.11.0`), перевіряє синтаксис `.js`/`.json` і паритет локалізацій, збирає `dist/instagram-follow-lists-1.11.0.zip` лише з файлів розширення, комітить і ставить тег `v1.11.0`. (`--no-git` — без коміту й тегу.)
+3. `git push --follow-tags` — GitHub Action (`.github/workflows/release.yml`) збирає zip із тегу й створює реліз із текстом із changelog (~1 хв).
+4. Протягом ~6 годин усі користувачі отримують сповіщення.
 
-**Important:** never push a `version.json` with a new version to `main` on its own — only through the release script and `git push --follow-tags`, so the commit and the tag arrive together. The link in `version.json` points to the release page of that exact tag; it starts working as soon as the Action finishes (about a minute).
+**Важливо:** `version.json` з новою версією не повинен потрапити в `main` раніше за реліз — тільки через скрипт і `git push --follow-tags`, щоб коміт і тег прийшли разом. Якщо Action упав — виправ і перезапусти його, або відкоти `version.json`.
 
-### Chrome Web Store build
-If the extension ever goes to the Web Store, the store updates it itself. Build the store zip with update checks switched off:
-```
-node scripts/release.mjs --build --store
-```
-(`UPDATE_URL` is blanked only inside `dist/…-store.zip`.)
+Інші команди: `--build` (лише zip), `--build --store` (zip для Chrome Web Store з вимкненою перевіркою оновлень — магазин оновлює сам), `--notes 1.11.0` (текст релізу), `--setup owner/repo` (одноразово: прописати `UPDATE_URL`; для приватного репозиторію raw-посилання не працюють — `version.json` треба викласти деінде публічно).
 
-## Testing update notifications locally
-1. Serve a `version.json` with a higher version and the header `Access-Control-Allow-Origin: *`, e.g. a tiny Node server on port 8765.
-2. Temporarily set `UPDATE_URL = 'http://localhost:8765/version.json'`, reload the extension, wait a minute (or press **Check** in the popup): the ↑ badge, the notification and the update block in the popup appear.
-3. Put `UPDATE_URL` back.
-4. NEW badge: open the popup once, raise `version` in `manifest.json`, reload the extension → **NEW**; open the popup → it disappears.
+### Перевірка сповіщень локально
+1. Підніми локальний сервер із `version.json` з вищою версією і заголовком `Access-Control-Allow-Origin: *` (порт 8765).
+2. Тимчасово `UPDATE_URL = 'http://localhost:8765/version.json'` у `background.js`, онови розширення, натисни «Перевірити» в popup → ↑, сповіщення, блок у popup.
+3. Поверни `UPDATE_URL`.
+4. NEW: відкрий popup, підвищ `version` у `manifest.json`, онови розширення → **NEW**; відкрий popup → зникає.
 
-## License
-MIT — see `LICENSE`.
+Для розробки з Claude — `CLAUDE.md` (архітектура, дані, правила, як тестувати на живій сторінці).
 
-## Extending with Claude
-See `CLAUDE.md` — architecture, data model, conventions and how to test changes on the live page.
+---
+
+## English
+
+Chrome extension for instagram.com: better Followers / Following lists and a tidier home page.
+
+- Full-height, wider Followers / Following modal; personal groups with colors; instant group filters.
+- "Follows" / "Not following" indicator; mute posts and stories right from the list.
+- Home opens the Following feed; feed switcher under the logo; pinned right sidebar; smaller stories; bigger, uncropped posts.
+
+**Install:** download the zip from the [latest release](https://github.com/ulquorium/instagram-follow-lists/releases/latest) (**Assets**), unzip into a permanent folder, `chrome://extensions` → Developer mode → **Load unpacked** → the folder.
+
+**Update:** you get a **↑** badge and a notification when a new version is out. Unzip it over the same folder and click ↻ on the extension card. Keep the same folder, or your groups won't carry over.
+
+**Privacy:** no data is collected or sent anywhere. Requests go only to Instagram (on your behalf, human-paced) and to GitHub for `version.json`. Groups and settings stay in your browser.
+
+**Releasing:** add the changelog entry first, then `node scripts/release.mjs X.Y.Z` and `git push --follow-tags` (details above).
+
+License: MIT.

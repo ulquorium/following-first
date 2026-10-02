@@ -18,10 +18,11 @@ import { execFileSync } from 'node:child_process';
 import { deflateRawSync } from 'node:zlib';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+// The only line that differs between the extensions (the script is shared).
 const ZIP_NAME = 'instagram-follow-lists';
 const LANGS = ['en', 'uk', 'ru'];
 // What goes into the zip: the extension itself, nothing else.
-const EXCLUDE_DIRS = new Set(['scripts', 'dist', '.github', '.git', 'node_modules']);
+const EXCLUDE_DIRS = new Set(['scripts', 'dist', 'docs', 'store', '.github', '.git', 'node_modules']);
 const EXCLUDE_FILES = new Set(['version.json', 'package.json', 'package-lock.json']);
 const INCLUDE_EXT = new Set(['.js', '.css', '.html', '.json', '.png', '.svg']);
 
