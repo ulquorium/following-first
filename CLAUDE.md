@@ -25,7 +25,7 @@ needs all three (keep them short — check widths, e.g. the 104px indicator).
 
 Bump `version` in `manifest.json` for every delivered change (semver-ish: patch
 for fixes, minor for features). Current: 1.10.0. Release through
-`scripts/release.mjs` (see README): add the changelog entry first.
+`scripts/release.mjs` (see README.uk.md, "Випуск нової версії"): add the changelog entry first.
 
 ## Features and how they work
 
