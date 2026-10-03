@@ -344,9 +344,50 @@
     row.querySelectorAll('article').forEach((a) => tweakPost(a, col, postW));
   }
 
+  // ---------- search page (/explore/search/) ----------
+  // The search field spans the whole content column, sits 12px lower and stays
+  // on screen while scrolling (sticky) — on the explore grid and on results.
+  // The "For you / Not personalized" tabs are hidden; Instagram's default stays.
+  // Two layouts: explore (field, tabs and grid are siblings in the column) and
+  // results (back arrow + field, tabs and results share one block).
+  function tweakSearch() {
+    const on = location.pathname.startsWith('/explore/search');
+    document.documentElement.toggleAttribute('data-igx-search', on);
+    if (!on) return;
+    const input = document.querySelector('main input[type="text"]');
+    if (!input) return;
+    // The bar: highest ancestor that is still only the search row — stop before
+    // a block that also holds the tabs or is as tall as the content.
+    let bar = input;
+    for (let p = bar.parentElement; p && p.tagName !== 'MAIN'; p = p.parentElement) {
+      if (p.querySelector('[role="tablist"]') || p.getBoundingClientRect().height > 200) break;
+      bar = p;
+    }
+    if (bar === input) return;
+    if (!bar.hasAttribute('data-igx-searchbar')) {
+      document.querySelectorAll('[data-igx-searchbar]').forEach((e) => e.removeAttribute('data-igx-searchbar'));
+      bar.setAttribute('data-igx-searchbar', '');
+    }
+    // Wrappers between the field and the bar: lone wrappers take 100% width,
+    // the one next to the back arrow grows to fill the row.
+    const chain = new Set();
+    for (let e = input.parentElement; e && e !== bar; e = e.parentElement) {
+      chain.add(e);
+      const v = e.parentElement.children.length === 1 ? 'w' : 'f';
+      if (e.getAttribute('data-igx-sfull') !== v) e.setAttribute('data-igx-sfull', v);
+    }
+    // Right after typing the tabs aren't rendered yet and the first guess can be
+    // too high — drop marks left on blocks outside the current chain.
+    document.querySelectorAll('[data-igx-sfull]').forEach((e) => { if (!chain.has(e)) e.removeAttribute('data-igx-sfull'); });
+    for (const c of bar.parentElement.children) {
+      if (c !== bar && c.querySelector('[role="tablist"]') && !c.hasAttribute('data-igx-searchtabs')) c.setAttribute('data-igx-searchtabs', '');
+    }
+  }
+
   // ---------- main loop ----------
   function run() {
     queued = false;
+    tweakSearch();
     ensureSwitcher();
     const row = findFeedRow();
     document.documentElement.toggleAttribute('data-igx-home', !!row);

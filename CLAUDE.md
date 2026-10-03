@@ -20,6 +20,7 @@ needs all three (keep them short — check widths, e.g. the 104px indicator).
 | `home.js` | `document_start` | Home page: Following feed by default, feed switcher under the logo, pinned right sidebar, centered column, smaller stories, bigger uncropped posts. |
 | `sync-store.js` | `document_idle`, before `content.js` | `syncStore.read/write/onChange`: JSON values in `chrome.storage.sync`, split into ≤8 KB chunks. Shared verbatim with the YouTube extension. |
 | `content.js` | `document_idle` | Followers/Following modal: size, groups, filters, "follows you" indicator, followers sync. |
+| `activity.js` | `document_idle`, after `content.js` | Your activity → Interactions: big borderless grid, chips, "Saved" (own grid), tile buttons send / unlike / unsave, "Saved" in the left nav, one-shot post actions. |
 | `styles.css` | with `content.js` | All styles for both scripts (injected on every Instagram page). |
 | `background.js` | service worker | Update checks (version.json), badges ↑ / NEW, system notification. |
 | `popup.html/.css/.js` | toolbar popup | Version, available update, "What's new" from `changelog.json`, Check button. Light/dark via `prefers-color-scheme`. |
@@ -70,7 +71,11 @@ for fixes, minor for features). Current: see `manifest.json`. Release through
   its normal lazy loading. A group pill hides the native list and its loaders
   (siblings after our list get `data-igx-hide`) and renders `.igx-list` from
   saved data only — **zero network requests**. The modal's search input also
-  filters the group list locally.
+  filters the group list locally. "All" shows the list total, taken from the
+  profile link that opened the modal (capture-phase click on
+  `a[href$="/followers/"|"/following/"]`, `countFromLink`: `[title]` digits or
+  the displayed number like "12.5K"; used if the dialog appears within 10 s).
+  Opened any other way → no number.
 - **Follows-you indicator:** "Follows" (primary text) / "Not following"
   (≈45% white, softer stroke) / "—" or "Checking…" before data exists.
   Based on the owner's full followers list (see Sync).
@@ -179,6 +184,96 @@ for fixes, minor for features). Current: see `manifest.json`. Release through
   The feed is virtualized; items are measured by Instagram, taller items
   are fine.
 
+### Search page (`tweakSearch` in `home.js`)
+- `/explore/search/…` (`<html data-igx-search>`): the search field spans the
+  whole content column, sits 12px lower and is `position: sticky` (white /
+  `--ig-primary-background` band) so it never scrolls away — on the explore
+  grid and on the results list. The "For you / Not personalized" tabs
+  (`[role="tablist"]` block) get `data-igx-searchtabs` → hidden; Instagram's
+  default selection stays.
+- Two DOM layouts. Explore: column > [search row, tabs block, grid]. Results
+  (after typing): one block > [back arrow + field row, tabs, results].
+  `data-igx-searchbar` = highest ancestor of `main input[type="text"]` that
+  doesn't contain the tablist and is ≤200px tall. Wrappers between field and
+  bar get `data-igx-sfull` = `w` (lone wrapper → width 100%, margins 0; the
+  explore field is 816px centered by margins) or `f` (next to the back arrow →
+  flex-grow). Stale marks are removed each run (right after typing the tabs
+  render a frame later, so the first guess can be too high).
+- Verified live (2026-10): explore field 264→1721px (was 816px), y 24→36,
+  sticky at y=12 while scrolling; results layout full width, tabs hidden.
+
+### Likes & Saved (`activity.js`)
+- `/your_activity/interactions/*` (`<html data-igx-act>`): the 935px bordered
+  box (`data-igx-actbox`) → 1280px, no border; the "Your activity" sidebar
+  (`data-igx-actside`) and the Reviews tab (`data-igx-hidden`) hidden; tabs
+  (`[role="tablist"]`, `data-igx-acttabs`) styled as chips, our **Saved** chip
+  prepended (order: Saved, Likes, Comments, Reposts, Story replies). Likes
+  tiles 3:4 via CSS on the Bloks `div[style*="aspect-ratio"]` (Instagram
+  re-measures rows itself) and 4 columns: the rows list gets
+  `data-igx-likelist` → display: grid (4 cols), rows and row wrappers
+  `display: contents` (lazy loading unaffected).
+- **Saved** (`#igx-saved`, `<html data-igx-saved>`): native panel
+  (`data-igx-actpanel`) hidden; our `.igx-saved` = collections row
+  (`.igx-colls`) + 4-column JS masonry (`.igx-mcol`, a tile goes to the
+  shortest column; ratio = original h/w of the post or its first carousel
+  item, clamped 0.5–1.9). Data: `GET /api/v1/feed/saved/posts/?max_id=` and
+  `/api/v1/feed/collection/{id}/posts/` (both work on web; `feed/liked/` and
+  `collections/list/` do NOT). Collection **names** exist only on the native
+  `/USER/saved/` page: `maybeHarvestHere()` reads its links
+  (`/USER/saved/slug/ID/`) into `igxCollections` (storage.local, 24h); if the
+  cache is missing or empty, a background-tab job opens that page (once per
+  browser session; an empty result from a background tab is never cached —
+  the page may not have rendered). Tiles in "All posts"
+  show their collection names (`saved_collection_ids`).
+- **Likes tiles are Bloks** (`[role="button"][aria-label*="@"]`): no post id or
+  link in the DOM, a click navigates (SPA) to `/p/CODE` and can't be cancelled
+  (blocking pushState still renders the post), posts can't be iframed
+  (`X-Frame-Options: DENY`).
+- Tile actions:
+  - **Send** → `sessionStorage.igxPostAction` + open the post → `runPending()`
+    presses Share (paper-plane path `M13.973 20.046`) → native Share dialog.
+  - **Unsave** (saved tiles) → tile greys out (`.igx-veil`), a background-tab
+    job (`bg-open` in background.js, `#igx-job=ID&a=unsave`) presses the filled
+    bookmark (path `M20 22a.999`) and reports via `storage.local igxJob_ID`,
+    then `bg-close`. Failure → veil removed + toast.
+  - **Collections** (saved tiles, when collections are known) → popover
+    `.igx-cpop` with a checkbox per collection (from `saved_collection_ids`)
+    + Done. Diff → `POST /api/v1/collections/{id}/edit/` with
+    `added_media_ids` / `removed_media_ids` = `["<pk>"]` (+ csrf), expects
+    `{"status":"ok"}`; badge updated; leaving the collection being viewed →
+    "Moved" veil. **No ticks = unsave** (owner's rule). Endpoint is the
+    private-API one, NOT verified on web (couldn't test on the account);
+    failure → toast, nothing changes. The native web "Add from saved" picker
+    opened empty, so it's no fallback.
+  - **Unlike** (likes tiles) → in place through Instagram's Select mode, found
+    by colour: blue "Select" above the grid → tick the tile (re-found by its
+    aria-label) → red "Unlike" in the bottom bar → red button of a confirm
+    dialog if one appears. Liked heart on a post = first action button, red
+    `rgb(255, 48, 64)`. `/api/v1/web/likes/{pk}/(un)like/` returns 404.
+- "Saved" nav item: a clone of the `a[href="/explore/"]` item with the native
+  svg attributes (class sets the colour), Instagram's bookmark outline /
+  filled when active, bold label; rebuilt when the native item changes shape
+  (labels exist only while the nav is expanded).
+- Tile buttons: white round buttons; send = paper plane, unlike = red filled
+  heart, unsave = filled bookmark (they show the current state; click removes).
+- **Left nav never expands**: `lockNav()` finds the panel with the inline
+  `width:` (72 ↔ 238px) and a window capture listener swallows mouse/pointer
+  over/out/enter/leave/move inside it, so Instagram never widens it or renders
+  labels. CSS `:hover` highlights still work (same for our Saved item).
+- **Post page** (`tweakPostPage`, `<html data-igx-post>`, standalone `/p/…`
+  only — skipped when the share button is inside an `<article>`, i.e. feed or
+  modal): `main > wrap > [post block (--x-maxWidth 815px) > box (1px border) >
+  media + comments 335px], line, "More posts from …"`. The post block gets
+  `--igx-post-max` = media width for the window height (media h/w ratio kept)
+  + comments width, max 1600px, height = window − 2 × space above (centred);
+  the box border is removed; everything after the
+  post is folded behind `.igx-moretoggle` ("More from this account").
+- Verified live: layout, chips, masonry + paging, collections (harvest, covers,
+  switching), Send (Share dialog opens; nothing sent). Unlike / unsave and the
+  background-tab job were not run on the account (owner tests them).
+
+- Footer links (Meta · About · Blog …) hidden everywhere: `footer:has(a[href*="about.meta.com"])`.
+
 ## Storage (`chrome.storage.local`)
 
 ```
@@ -251,7 +346,7 @@ storage change.
 ## Shared with the YouTube extension
 `background.js`, `popup.html`, `popup.js`, `sync-store.js`, `scripts/release.mjs` and
 `.github/workflows/release.yml` are **identical** in this repo and in
-`ulquorium/youtube-subs-first` (sibling folder `../youtube-subs-first`). Only
+`ulquorium/subscriptions-first` (sibling folder `../subscriptions-first`). Only
 `UPDATE_URL` (background.js), `ZIP_NAME` (release.mjs) and the palette in
 `popup.css` differ; `_locales` have the same keys. Change them in both.
 

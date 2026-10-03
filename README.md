@@ -13,6 +13,8 @@ sort people into groups, doesn't tell you who follows you back, and hides the
 Following feed behind the algorithmic one. This extension fixes that without any
 account, server or tracking — everything happens in your browser.
 
+Sibling extension for YouTube: [Subscriptions First](https://github.com/ulquorium/subscriptions-first).
+
 ## Features
 
 **Followers / Following lists**

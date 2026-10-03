@@ -553,3 +553,313 @@ html[data-igx-home] [data-igx-feedrow] > :first-child {
   width: 100% !important;
   max-width: 930px !important;
 }
+
+/* ---------- search page (home.js → tweakSearch) ---------- */
+html[data-igx-search] [data-igx-searchbar] {
+  position: sticky !important;
+  top: 0;
+  z-index: 3;
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+  background: rgb(var(--ig-primary-background, 255, 255, 255));
+}
+html[data-igx-search] [data-igx-sfull="w"] {
+  width: 100% !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+html[data-igx-search] [data-igx-sfull="f"] { flex: 1 1 auto !important; max-width: none !important; }
+html[data-igx-search] [data-igx-searchtabs] { display: none !important; }
+
+/* ================= Activity: likes / saved (activity.js) ================= */
+html[data-igx-act] {
+  --igx-text: rgb(var(--ig-primary-text, 245, 245, 245));
+  --igx-muted: rgb(var(--ig-secondary-text, 168, 168, 168));
+  --igx-surface: rgb(var(--ig-secondary-background, 37, 41, 46));
+  --igx-hover: rgba(var(--ig-hover-overlay, 255, 255, 255, .1));
+}
+html[data-igx-act] [data-igx-actbox] {
+  max-width: 1280px !important;
+  width: 100% !important;
+  border: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+html[data-igx-act] [data-igx-actside],
+html[data-igx-act] [data-igx-hidden] { display: none !important; }
+html[data-igx-act] [data-igx-actmain] { flex: 1 1 auto !important; width: 100% !important; max-width: none !important; }
+html[data-igx-act] [data-igx-actmain] * { scrollbar-width: none; }
+html[data-igx-saved] [data-igx-actpanel] { display: none !important; }
+html[data-igx-act] [data-igx-acttabs] > a[data-igx-hidden] { display: none !important; }
+
+/* Tabs → chips */
+html[data-igx-act] [data-igx-acttabs] {
+  justify-content: flex-start !important;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 0 !important;
+  border: 0 !important;
+}
+html[data-igx-act] [data-igx-acttabs] > a {
+  flex: none !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  margin: 0 !important;
+  padding: 0 14px !important;
+  border: 0 !important;
+  border-radius: 999px;
+  background: var(--igx-surface);
+  color: var(--igx-text) !important;
+  font: 600 14px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  text-decoration: none;
+}
+html[data-igx-act] [data-igx-acttabs] > a * { color: inherit !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 14px !important; border: 0 !important; }
+html[data-igx-act]:not([data-igx-saved]) [data-igx-acttabs] > a[aria-selected="true"],
+html[data-igx-act] [data-igx-acttabs] > a.igx-on {
+  background: var(--igx-text);
+  color: rgb(var(--ig-primary-background, 0, 0, 0)) !important;
+}
+
+/* Likes: taller tiles (Instagram's Bloks grid re-measures itself) */
+html[data-igx-act] [data-igx-actpanel] div[style*="aspect-ratio"] { aspect-ratio: 3 / 4 !important; height: auto !important; }
+
+/* Saved: collections row + masonry */
+.igx-saved {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.igx-saved[hidden], .igx-colls[hidden] { display: none; }
+.igx-colls {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 5px 5px 16px; /* room for the active outline (2px + 2px offset) */
+  scrollbar-width: none;
+}
+.igx-coll {
+  flex: none;
+  width: 112px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--igx-text);
+  text-align: left;
+  cursor: pointer;
+  font: 600 13px/1.3 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+.igx-coll-pic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 112px;
+  height: 112px;
+  margin-bottom: 6px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--igx-surface);
+  color: var(--igx-muted);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.igx-coll-pic img { width: 100%; height: 100%; object-fit: cover; }
+.igx-coll.igx-on .igx-coll-pic { outline-color: var(--igx-text); }
+.igx-coll-name { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.igx-masonry {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  align-items: start;
+}
+.igx-mcol { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.igx-stile {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--igx-surface);
+}
+.igx-stile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.igx-sbadge {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  color: #fff;
+  font-size: 16px;
+  text-shadow: 0 0 4px rgba(0, 0, 0, .6);
+}
+.igx-scoll {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  max-width: calc(100% - 48px);
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, .55);
+  color: #fff;
+  font: 600 11px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  backdrop-filter: blur(6px);
+}
+.igx-snote {
+  padding: 24px;
+  text-align: center;
+  color: var(--igx-muted);
+  font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+.igx-snote:empty { display: none; }
+
+/* Grey veil: "Removing…" / "Removed" */
+.igx-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(128, 128, 128, .82);
+  color: #fff;
+  font: 600 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  pointer-events: auto;
+}
+.igx-veil ~ .igx-tactions, .igx-stile:has(.igx-veil) .igx-tactions { display: none; }
+/* While unliking through Select mode, keep Instagram's selection UI out of sight */
+html[data-igx-unliking] [data-igx-actbox] { pointer-events: none; }
+
+/* Nav item "Saved": bold label when active, like the native items */
+.igx-navsaved.igx-navactive .igx-navlabel { font-weight: 700 !important; }
+
+/* Buttons on tiles (saved + native likes) */
+.igx-ltile { position: relative !important; }
+.igx-tactions {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity .12s;
+  pointer-events: auto;
+  z-index: 2;
+}
+.igx-stile:hover .igx-tactions,
+.igx-ltile:hover .igx-tactions,
+.igx-tactions:focus-within { opacity: 1; }
+.igx-tbtn {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .94);
+  color: #0c1014;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .22);
+  transition: transform .12s, background .12s;
+}
+.igx-tbtn:hover { background: #fff; transform: scale(1.08); }
+.igx-tbtn svg { display: block; }
+
+/* Toast */
+#igx-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  z-index: 100000;
+  transform: translate(-50%, 12px);
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: #262626;
+  color: #fff;
+  font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s, transform .2s;
+}
+#igx-toast.igx-show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ================= Post page (activity.js → tweakPostPage) ================= */
+html[data-igx-post] [data-igx-pwrap] { max-width: none !important; width: 100% !important; }
+html[data-igx-post] [data-igx-ppost] {
+  --x-maxWidth: min(100%, var(--igx-post-max, 1200px)) !important;
+  max-width: min(100%, var(--igx-post-max, 1200px)) !important;
+  margin: 24px auto 0 !important;
+}
+html[data-igx-post] [data-igx-pbox] { border: 0 !important; }
+html[data-igx-post] [data-igx-pwrap]:not([data-igx-pmore-open]) > [data-igx-pmore] { display: none !important; }
+.igx-moretoggle {
+  display: block;
+  margin: 24px auto;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: rgb(var(--ig-secondary-background, 239, 239, 239));
+  color: rgb(var(--ig-primary-text, 12, 16, 20));
+  font: 600 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  cursor: pointer;
+}
+
+/* Likes: 4 columns instead of Instagram's rows of 3 */
+html[data-igx-act] [data-igx-likelist] { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 2px !important; }
+html[data-igx-act] [data-igx-likelist] > *,
+html[data-igx-act] [data-igx-likelist] > * > * { display: contents !important; }
+
+/* Footer links (Meta · About · Blog · Jobs …) — not needed anywhere */
+footer:has(a[href*="about.meta.com"]), footer:has(a[href*="about.instagram.com"]) { display: none !important; }
+
+/* "Collections" popover on saved tiles */
+.igx-cpop {
+  box-sizing: border-box;
+  position: fixed;
+  z-index: 100001;
+  width: 240px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgb(var(--ig-primary-background, 255, 255, 255));
+  color: rgb(var(--ig-primary-text, 12, 16, 20));
+  box-shadow: 0 8px 32px rgba(0, 0, 0, .25), 0 0 0 1px rgba(0, 0, 0, .06);
+  font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+.igx-cpop-title { font-weight: 700; margin-bottom: 6px; }
+.igx-cpop-list { max-height: 280px; overflow-y: auto; }
+.igx-cpop-row { display: flex; align-items: center; gap: 10px; padding: 7px 4px; border-radius: 8px; cursor: pointer; }
+.igx-cpop-row:hover { background: rgba(var(--ig-hover-overlay, 0, 0, 0, .05)); }
+.igx-cpop-row input { width: 18px; height: 18px; margin: 0; accent-color: rgb(var(--ig-primary-button, 0, 149, 246)); }
+.igx-cpop-done:disabled { opacity: .35; cursor: default; }
+.igx-cpop-sep { height: 1px; margin: 10px -12px; background: rgb(var(--ig-separator, 219, 219, 219)); }
+.igx-cpop-remove {
+  width: 100%;
+  padding: 6px;
+  border: 0;
+  background: none;
+  color: #ed4956;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.igx-cpop-done {
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px;
+  border: 0;
+  border-radius: 8px;
+  background: rgb(var(--ig-primary-button, 0, 149, 246));
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Mute items in Instagram's "⋯" menu (mute-menu.js) */
+.igx-mutemenu { display: contents; }
+.igx-mutebtn { display: block; width: 100%; }

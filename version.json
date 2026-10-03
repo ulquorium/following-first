@@ -1,9 +1,9 @@
 {
-  "version": "1.12.0",
-  "url": "https://github.com/ulquorium/following-first/releases/tag/v1.12.0",
+  "version": "1.13.0",
+  "url": "https://github.com/ulquorium/following-first/releases/tag/v1.13.0",
   "notes": {
-    "en": "• New name: Following First — Instagram on your terms.\n• The extension popup now has an “About” link to the description and help on GitHub.",
-    "uk": "• Нова назва: Following First — Instagram на твоїх умовах.\n• У вікні розширення з'явилося посилання «Про розширення» — опис і довідка на GitHub.",
-    "ru": "• Новое название: Following First — Instagram на ваших условиях.\n• В окне расширения появилась ссылка «О расширении» — описание и справка на GitHub."
+    "en": "• Likes & Saved: a big 4-column grid, chips instead of tabs, collections, buttons on posts: send, remove like, remove from saved, move between collections.\n• “Saved” in the left nav; the nav no longer expands with labels.\n• Post page: a big centred post without a frame; “More from this account” folded.\n• In the “⋯” menu of a post, reel or story — mute the author's posts and/or stories.\n• Search: full-width field that stays on screen while scrolling, no “For you / Not personalized” tabs.\n• Total count next to “All” in follow lists. No Meta footer links. New icon.",
+    "uk": "• Лайки й «Збережене»: велика сітка в 4 колонки, чипи замість вкладок, колекції, кнопки на дописах: надіслати, прибрати лайк, прибрати зі збереженого, перемістити між колекціями.\n• «Збережене» в лівому меню; меню більше не розгортається з підписами.\n• Сторінка допису: великий допис по центру, без рамки; «Більше від акаунта» згорнуто.\n• У меню «⋯» допису, рілса чи сторіз — вимкнути дописи й/або сторіз автора.\n• Пошук: поле на всю ширину й не зникає під час прокрутки, без вкладок «For you / Not personalized».\n• Біля «Усі» у списках підписок — загальна кількість. Без футера з посиланнями Meta. Нова іконка.",
+    "ru": "• Лайки и «Сохранённое»: большая сетка в 4 колонки, чипы вместо вкладок, коллекции, кнопки на постах: отправить, убрать лайк, убрать из сохранённого, переместить между коллекциями.\n• «Сохранённое» в левом меню; меню больше не раскрывается с подписями.\n• Страница поста: большой пост по центру, без рамки; «Ещё от аккаунта» свёрнуто.\n• В меню «⋯» поста, рилса или сторис — скрыть публикации и/или сторис автора.\n• Поиск: поле на всю ширину и не пропадает при прокрутке, без вкладок «For you / Not personalized».\n• Рядом с «Все» в списках подписок — общее количество. Без футера со ссылками Meta. Новая иконка."
   }
 }

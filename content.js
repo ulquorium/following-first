@@ -248,12 +248,30 @@
   }
 
   // ---------- filter bar & group list ----------
+  // Total for the "All" pill. Instagram doesn't show it inside the dialog, but
+  // the profile link that opens it does ("475 following"): remember that number
+  // on click (exact value from a title attribute if there is one, otherwise the
+  // number as displayed, e.g. "12.5K"). Language-independent: digits only.
+  let lastListLink = null; // { count, ts }
+  function countFromLink(a) {
+    const t = a.querySelector('[title]');
+    const s = (t && /\d/.test(t.getAttribute('title')) && t.getAttribute('title')) || a.textContent || '';
+    const m = s.match(/\d(?:[\d\s\u00a0\u202f.,]*\d)?(?:\s?[KkMm]\b|\s?(?:тис|тыс|млн)\.?)?/);
+    return m ? m[0].replace(/[\s\u00a0\u202f]+/g, '\u00a0').trim() : null;
+  }
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest && e.target.closest('a[href$="/followers/"], a[href$="/following/"]');
+    if (a) lastListLink = { count: countFromLink(a), ts: Date.now() };
+  }, true);
+
   function setupDialog(d) {
     d.setAttribute(ATTR, '1');
     const w = d.getBoundingClientRect().width;
     d.style.setProperty('width', Math.min(w + EXTRA_WIDTH, window.innerWidth - 32) + 'px', 'important');
     d.style.setProperty('max-width', 'none', 'important');
-    d._igx = { filter: 'all', bar: null, list: null, scroll: null };
+    const total = lastListLink && Date.now() - lastListLink.ts < 10000 ? lastListLink.count : null;
+    lastListLink = null;
+    d._igx = { filter: 'all', bar: null, list: null, scroll: null, total };
     d.addEventListener('input', (e) => {
       if (e.target.matches('input[type="text"]') && !e.target.closest('.igx-pop') && d._igx.filter !== 'all') renderList(d);
     }, true);
@@ -320,6 +338,7 @@
       }
       p.append(el('span', null, g.label));
       if (g.id !== 'all') p.append(el('span', 'igx-count', String(countIn(g.id))));
+      else if (st.total) p.append(el('span', 'igx-count', st.total));
       p.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();

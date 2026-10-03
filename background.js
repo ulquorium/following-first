@@ -118,7 +118,23 @@ chrome.notifications.onClicked.addListener(async (id) => {
   if (remote && remote.url) chrome.tabs.create({ url: remote.url });
 });
 
+// Background tab jobs for content scripts (e.g. "remove from saved" on a post
+// page without leaving the current page). Same-origin URLs only.
+const sameOrigin = (url, sender) => {
+  try { return !!sender.url && new URL(url, sender.url).origin === new URL(sender.url).origin; } catch (e) { return false; }
+};
+
 chrome.runtime.onMessage.addListener((msg, sender, reply) => {
+  if (msg && msg.type === 'bg-open') {
+    if (!sameOrigin(msg.url, sender)) { reply({ ok: false }); return false; }
+    chrome.tabs.create({ url: new URL(msg.url, sender.url).href, active: false })
+      .then((t) => reply({ ok: true, tabId: t.id }), () => reply({ ok: false }));
+    return true;
+  }
+  if (msg && msg.type === 'bg-close') {
+    if (sender.tab && sender.tab.id != null) chrome.tabs.remove(sender.tab.id).catch(() => {});
+    return false;
+  }
   if (msg === 'check-now') {
     checkForUpdate().finally(() => reply({ enabled: !!UPDATE_URL }));
     return true;
