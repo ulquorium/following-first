@@ -77,7 +77,8 @@ function checkSyntax(files) {
 
 // Every locale must have the same message keys, every changelog entry all languages.
 function checkLocales() {
-  const dirs = readdirSync(join(ROOT, '_locales'));
+  // Only locale folders (macOS may drop an "Icon\r" file or .DS_Store here).
+  const dirs = readdirSync(join(ROOT, '_locales')).filter((d) => !d.startsWith('.') && statSync(join(ROOT, '_locales', d)).isDirectory());
   const keys = Object.fromEntries(dirs.map((d) => [d, Object.keys(readJson('_locales/' + d + '/messages.json')).sort()]));
   const all = [...new Set(Object.values(keys).flat())];
   for (const d of dirs) {
